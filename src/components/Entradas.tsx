@@ -6,6 +6,7 @@ import {
     useTransform,
     MotionValue
   } from "framer-motion";  
+import { Link } from 'react-router-dom';
 
 interface Entradas{
     id: number;
@@ -30,9 +31,11 @@ function Entrada({ id, imagen, titulo, autor, fecha } : Entradas){
 
     return(
         <section>
-            <div ref={ref}>
-                <img src={imagen} style={{ width: width * 0.3, borderRadius: 20 }} />                
-            </div>
+            <Link to={'/entrada'}>
+                <div ref={ref}>
+                    <img src={imagen} style={{ width: width * 0.3, borderRadius: 20 }} />                
+                </div>            
+            </Link>
             <motion.h2 style={{ y, color: '#e8de10' }}>{titulo}</motion.h2>
             <motion.h3 style={{ y, color: '#e8de10'}}>{autor}</motion.h3>
             <motion.h4 style={{ y, color: '#e8de10'}}>{fecha}</motion.h4>
