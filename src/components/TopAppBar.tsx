@@ -13,30 +13,40 @@ function TopAppBar(){
                 style={{
                     height: height,
                     width: width,
-                    borderBottom: '1px solid lightgrey',
                 }}
             >
-                <Box>
-                    <img src='https://i.imgur.com/FNQxxqV.jpg' style={{ width: width * 0.4, margin: 20}} />
+                <img src='https://i.imgur.com/FNQxxqV.jpg' style={{ width: width * 0.4, margin: 20}} />
+                <br />
+                <br />
+                <section>
+                    <ParallaxText baseVelocity={-5} variant={1}>El Guardatextos</ParallaxText>
                     <br />
                     <br />
-                    <section>
-                        <ParallaxText baseVelocity={-5} variant={1}>El Guardatextos</ParallaxText>
-                        <br />
-                        <br />
-                        <ParallaxText baseVelocity={5} variant={3}>Revista / Web mexicana de literatura</ParallaxText>
-                    </section>                    
-                </Box>
+                    <ParallaxText baseVelocity={5} variant={3}>Revista / Web mexicana de literatura</ParallaxText>
+                </section>                    
 
-                <Box style={{ 
+
+            </Box>
+            <Box 
+                style={{ 
                     width: width, 
                     display: 'flex', 
                     flexDirection: 'row',
-                    }}>
-                    <Button variant='text' style={{ textTransform: 'none' }}>
-                        Pagina Principal
-                    </Button>
-                </Box>
+                    justifyContent: 'space-evenly',
+                    borderTop: '1px solid lightgrey',                    
+                    borderBottom: '1px solid lightgrey',
+                    padding: 30
+                }}
+            >
+                <Button variant='text' style={{ textTransform: 'none', color: 'gray' }}>
+                    Pagina Principal
+                </Button>
+                <Button variant='text' style={{ textTransform: 'none', color: 'gray' }}>
+                    Columna: El pequeño guardatextos
+                </Button>
+                <Button variant='text' style={{ textTransform: 'none', color: 'gray' }}>
+                    Escritores Zacatecanos
+                </Button>
             </Box>
         </div>
 
