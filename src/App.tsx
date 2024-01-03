@@ -4,6 +4,7 @@ import './App.css'
 
 import TopAppBar from './components/TopAppBar'
 import Entrada from './components/Entradas'
+import { Divider } from '@mui/material'
 
 const entrada = (id: number, imagen: string, titulo: string, autor: string, fecha: string, texto: string) => {
   return { id, imagen, titulo, autor, fecha, texto };
@@ -52,7 +53,7 @@ const entradas = [
   ),
   entrada(
     6,
-    'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKNhyIiwMxstd21_AcYbYkSTfLicWM4QtqOl_2BTyr91wSFV3ERqSLPmAcecbJJ5W_LXjpNkd6fhGKk2fZc9tobw06U_YwCyceAk5udWsKSqXmrz5N9fBx2gzOkjlStVPio4f_kubKTFVzOfGg83j4Jv1vR6J5mbraWjV40JH8lx7yFx8izaR_1-MLU-iP/w400-h366-rw/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpbSI6WyJcL2FydHdvcmtcL2ltYWdlRmlsZVwvOTRjODBkNmJkNzlkZGFhNzM3Nzc5ODFhMThlNDUwYzkuanBnIiwicmVzaXplLDIwMDAsMjAwMCJdfQ.Jshm80NtLgDM6cEE3Kr38usJ2YAaquCxPNyUZn75hbQ.jpg',
+    'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjEa2Mn1rK0oewauILdH-8X69bDg48GlQlCxVdGbA-rFFxChtZXLz80KNhRuJwEP7S9I-dE-nMcw-snCtZ9KwClFQ82BNTo5ZpIZeiVBYCIyo22Lbm_WAqGLBau6EojBWQ5LqayYAq6CQ5fES3ndcjyRVJpr9wWQQQrgEcA3d_cEb6sUjE4BM-XuT6zBMQ0/w576/additional_b34f64692bfeec01dbe4aec0985f6926a8f1bc35-AICC2-7.jpeg',
     'Safo y Mnemosine. Seis poemas de ',
     'Adrián Chaurán',  
     'octubre 17, 2023',
@@ -73,13 +74,17 @@ function App() {
   return (
     <div style={{width: width}}>
       <TopAppBar />
-      <div>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', margin: 20 }}>
         <div>
           {entradas.map((entrada) =>(
             <Entrada key={entrada.id} id={entrada.id} imagen={entrada.imagen} titulo={entrada.titulo} autor={entrada.autor} fecha={entrada.fecha} texto='' />
           ))}
           <motion.div className="progress" style={{ scaleX }} />
         </div>        
+        <Divider orientation='vertical' flexItem />
+        <div>
+          Columna o algo
+        </div>
       </div>
 
     </div>

@@ -31,9 +31,11 @@ function Entrada({ id, imagen, titulo, autor, fecha } : Entradas){
     return(
         <section>
             <div ref={ref}>
-                <img src={imagen} style={{ width: width * 0.2 }} />                
+                <img src={imagen} style={{ width: width * 0.3, borderRadius: 20 }} />                
             </div>
-            <motion.h2 style={{ y }}>{titulo}</motion.h2>
+            <motion.h2 style={{ y, color: '#e8de10' }}>{titulo}</motion.h2>
+            <motion.h3 style={{ y, color: '#e8de10'}}>{autor}</motion.h3>
+            <motion.h4 style={{ y, color: '#e8de10'}}>{fecha}</motion.h4>
         </section>
     );
 }
