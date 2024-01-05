@@ -6,6 +6,10 @@ import TopAppBar from './components/TopAppBar'
 import Entrada from './components/Entradas'
 import { Divider } from '@mui/material'
 
+import db from './firebase'
+import { DocumentData, collection, doc, getDocs } from "firebase/firestore"; 
+import AutorCarta from './components/AutorCarta'
+
 const entrada = (id: number, imagen: string, titulo: string, autor: string, fecha: string, texto: string) => {
   return { id, imagen, titulo, autor, fecha, texto };
 }
@@ -61,7 +65,29 @@ const entradas = [
   ),  
 ]
 
+
+
+/*const querySnapshot = await getDocs(collection(db, "autores"));
+
+querySnapshot.forEach((doc) => {
+  console.log(doc.data());
+}); */
+
 function App() {
+
+  interface Autor {
+    id: string;
+    nombre: string;
+    apellidos: string;
+    año_nacimiento: number;
+    descripcion: string;
+    estudios_profesion: string;
+    lugar_nacimiento: string;
+    url_imagen: string;
+  }
+
+  const [autores, setAutores] = React.useState<Autor[]>([]);
+
   const width = window.innerWidth;
 
   const { scrollYProgress } = useScroll();
@@ -70,6 +96,27 @@ function App() {
     damping: 30,
     restDelta: 0.001
   });
+
+  React.useEffect(() =>{
+    const fetchData = async () => {
+
+      const autoresCollection = await getDocs(collection(db, 'autores'))     
+      
+      const autoresList: Autor[] = autoresCollection.docs.map((autor) => ({
+        id: autor.id,
+        nombre: autor.data().nombre,
+        apellidos: autor.data().apellidos,
+        año_nacimiento: autor.data().año_nacimiento,
+        descripcion: autor.data().descripcion,
+        estudios_profesion: autor.data().estudios_profesion,
+        lugar_nacimiento: autor.data().lugar_nacimiento,
+        url_imagen: autor.data().url_imagen,
+      })) as Autor[];
+
+      setAutores(autoresList);
+    }
+    fetchData()
+  }, [])
 
   return (
     <div style={{width: width}}>
@@ -83,10 +130,22 @@ function App() {
         </div>        
         <Divider orientation='vertical' flexItem />
         <div>
-          Columna o algo
+          {autores.map((autor) => (
+              <div key={autor.id}>
+                <AutorCarta 
+                  id={autor.id} 
+                  nombre={autor.nombre} 
+                  apellidos={autor.apellidos} 
+                  aNacimiento={autor.año_nacimiento} 
+                  lNacimiento={autor.lugar_nacimiento} 
+                  estudiosProfesion={autor.estudios_profesion}
+                  url={autor.url_imagen}
+                />
+                
+              </div>
+          ))}
         </div>
       </div>
-
     </div>
   )
 }
