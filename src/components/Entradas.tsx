@@ -2,7 +2,6 @@ import React from 'react'
 import {
     motion,
     useScroll,
-    useSpring,
     useTransform,
     MotionValue
   } from "framer-motion";  
@@ -27,7 +26,6 @@ function Entrada({ id, imagen, titulo, autor, fecha } : Entradas){
     const y = useParallax(scrollYProgress, 300);
 
     const width = window.innerWidth;
-    const height = window.innerHeight;
 
     return(
         <section>

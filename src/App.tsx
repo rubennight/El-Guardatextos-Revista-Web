@@ -1,5 +1,4 @@
 import React from 'react'
-import { useScroll, useSpring, motion } from 'framer-motion'
 import './App.css'
 
 import TopAppBar from './components/TopAppBar'
@@ -7,11 +6,12 @@ import Entrada from './components/Entradas'
 import { Divider } from '@mui/material'
 
 import db from './firebase'
-import { DocumentData, collection, doc, getDocs } from "firebase/firestore"; 
-import AutorCarta from './components/AutorCarta'
+import { collection, getDocs } from "firebase/firestore"; 
+import AutorTarjeta from './components/AutorTarjeta'
+import AutorSkeleton from './components/AutorSkeleton'
 
-const entrada = (id: number, imagen: string, titulo: string, autor: string, fecha: string, texto: string) => {
-  return { id, imagen, titulo, autor, fecha, texto };
+const entrada = (id: number, imagen: string, titulo: string, autor: string, fecha: string, idAutor: string) => {
+  return { id, imagen, titulo, autor, fecha, idAutor };
 }
 
 const entradas = [
@@ -21,7 +21,7 @@ const entradas = [
     'Godín',
     'José Baroja',
     'enero 02, 2024',
-    ''
+    '1'
   ),
   entrada(
     2,
@@ -29,7 +29,7 @@ const entradas = [
     'Tres cuentos infantiles de ',
     'Ma. Zulema Moreno Lopez',
     'diciembre 28, 2023',
-    ''
+    '2'
   ),
   entrada(
     3,
@@ -37,7 +37,7 @@ const entradas = [
     'Exodoncia. Seis poemas de ',
     'Alexia Castañeda',  
     'diciembre 10, 2023',
-    ''
+    '3'
   ),
   entrada(
     4,
@@ -45,7 +45,7 @@ const entradas = [
     'Poemas de "falso jazz" de ',
     'Fernando Waroto',  
     'noviembre 24, 2023',
-    ''
+    '4'
   ),
   entrada(
     5,
@@ -53,7 +53,7 @@ const entradas = [
     'La mujer destructora: poemas de ',
     'Viva Padilla',  
     'noviembre 02, 2023',
-    ''
+    '5'
   ),
   entrada(
     6,
@@ -61,90 +61,80 @@ const entradas = [
     'Safo y Mnemosine. Seis poemas de ',
     'Adrián Chaurán',  
     'octubre 17, 2023',
-    ''
+    '6'
   ),  
 ]
 
-
-
-/*const querySnapshot = await getDocs(collection(db, "autores"));
-
-querySnapshot.forEach((doc) => {
-  console.log(doc.data());
-}); */
-
 function App() {
-
-  interface Autor {
-    id: string;
-    nombre: string;
-    apellidos: string;
-    año_nacimiento: number;
-    descripcion: string;
-    estudios_profesion: string;
-    lugar_nacimiento: string;
-    url_imagen: string;
-  }
-
-  const [autores, setAutores] = React.useState<Autor[]>([]);
+  const [autores, setAutores] = React.useState<Autor[]>([])
 
   const width = window.innerWidth;
 
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
   React.useEffect(() =>{
-    const fetchData = async () => {
+    const fetchAutoresData = async () => {
 
-      const autoresCollection = await getDocs(collection(db, 'autores'))     
-      
+      const autoresCollection = await getDocs(collection(db, 'autores'));
+
       const autoresList: Autor[] = autoresCollection.docs.map((autor) => ({
         id: autor.id,
         nombre: autor.data().nombre,
         apellidos: autor.data().apellidos,
-        año_nacimiento: autor.data().año_nacimiento,
+        aNacimiento: autor.data().año_nacimiento,
         descripcion: autor.data().descripcion,
-        estudios_profesion: autor.data().estudios_profesion,
-        lugar_nacimiento: autor.data().lugar_nacimiento,
-        url_imagen: autor.data().url_imagen,
+        estudiosProfesion: autor.data().estudios_profesion,
+        lNacimiento: autor.data().lugar_nacimiento,
+        url: autor.data().url_imagen,
       })) as Autor[];
 
-      setAutores(autoresList);
-    }
-    fetchData()
+      setAutores(autoresList)
+
+    };
+  
+      fetchAutoresData();
   }, [])
+
+  const autorPorEntrada = (id: string) =>{
+    const foundAutor = autores.find((autor) => autor.id === id);
+
+    if (foundAutor) {
+      return (
+        <div>
+          <AutorTarjeta
+            key={foundAutor.id}
+            id={foundAutor.id}
+            nombre={foundAutor.nombre}
+            apellidos={foundAutor.apellidos}
+            url={foundAutor.url}
+            aNacimiento={foundAutor.aNacimiento}
+            lNacimiento={foundAutor.lNacimiento}
+            estudiosProfesion={foundAutor.estudiosProfesion}
+            descripcion={foundAutor.descripcion}
+          />          
+        </div>
+      );
+    }else{
+      return(
+        <AutorSkeleton />
+      )
+    }
+
+    return null;
+  }
 
   return (
     <div style={{width: width}}>
       <TopAppBar />
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', margin: 20 }}>
+      <div style={{ margin: 20 }}>
         <div>
           {entradas.map((entrada) =>(
-            <Entrada key={entrada.id} id={entrada.id} imagen={entrada.imagen} titulo={entrada.titulo} autor={entrada.autor} fecha={entrada.fecha} texto='' />
+            <div key={entrada.id} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+              <Entrada id={entrada.id} imagen={entrada.imagen} titulo={entrada.titulo} autor={entrada.autor} fecha={entrada.fecha} texto='' />
+              <Divider orientation='vertical' flexItem />              
+              {autorPorEntrada(entrada.idAutor)}
+            </div>
           ))}
-          <motion.div className="progress" style={{ scaleX }} />
         </div>        
-        <Divider orientation='vertical' flexItem />
-        <div>
-          {autores.map((autor) => (
-              <div key={autor.id}>
-                <AutorCarta 
-                  id={autor.id} 
-                  nombre={autor.nombre} 
-                  apellidos={autor.apellidos} 
-                  aNacimiento={autor.año_nacimiento} 
-                  lNacimiento={autor.lugar_nacimiento} 
-                  estudiosProfesion={autor.estudios_profesion}
-                  url={autor.url_imagen}
-                />
-                
-              </div>
-          ))}
-        </div>
+
       </div>
     </div>
   )
