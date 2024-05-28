@@ -1,9 +1,12 @@
+# El Guardatextos-Revista-Web 
+
 # React + TypeScript + Vite
 
 Proyecto para la revista/web de literatura mexicana El Guardatextos.
 
 El proyecto tiene un enfoque de tipo blog, donde tendrá distintas entradas/publicaciones con un estilo minimalista.
-Así mismo en ellos se podrá comentar y tendrá etiquetas personalizadas por el administrador. 
+Así mismo en ellos se podrá comentar y tendrá etiquetas personalizadas por el administrador. Se usará una base de datos 
+de Firebase.
 
 ## Expanding the ESLint configuration
 
